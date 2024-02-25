@@ -1,0 +1,65 @@
+#ifndef WEBPAGE_H
+#define WEBPAGE_H
+
+const char* webpage = R"=====(
+  <!DOCTYPE html>
+<html>
+  <head>
+    <title>JankLight&trade; Control</title>
+  </head>
+  <body>
+    Mode: <select id='mode' name='mode'>
+      <option value='0'>Rainbow</option>
+      <option value='1'>Flash</option>
+      <option value='2'>Aurora</option>
+      <option value='3'>Fire</option>
+      <option value='4'>Police</option>
+      <option value='6'>Purple</option>
+    </select><br>
+    Brightness: <input type='range' id='brightness_slider' name='brightness' min='0' max='255'><input type='number' min='0' max='255' id='brightness' name='brightness'> 0 Dimmest - 255 Brightest<br>
+    Speed: <input type='range' id='speed_slider' name='speed' min='1' max='1000'><input type='number' min='1' max='1000' id='speed' name='speed'> 1 Really Fast - 1000 Really Slow<br>
+    <script>
+      const mode = document.querySelector('#mode');
+      const brightness = document.querySelector('#brightness');
+      const speed = document.querySelector('#speed');
+      const brightness_slider = document.querySelector('#brightness_slider');
+      const speed_slider = document.querySelector('#speed_slider');
+      mode.value = %MODE%;
+      brightness.value = %BRIGHTNESS%;
+      speed.value = %SPEED%;
+      //mode.value = 1;
+      //brightness.value = 255;
+      //speed.value = 10;
+
+      brightness_slider.value = brightness.value;
+      speed_slider.value = speed.value;
+
+      brightness_slider.addEventListener('input', e => {
+        brightness.value = brightness_slider.value;
+      })
+      brightness.addEventListener('input', e => {
+        brightness_slider.value = brightness.value;
+      })
+
+      speed_slider.addEventListener('input', e => {
+        speed.value = speed_slider.value;
+      })
+      speed.addEventListener('input', e => {
+        speed_slider.value = speed.value;
+      })
+
+      mode.addEventListener('change', setState);
+      brightness.addEventListener('change', setState);
+      speed.addEventListener('change', setState);
+      brightness_slider.addEventListener('change', setState);
+      speed_slider.addEventListener('change', setState);
+
+      function setState(e) {
+        fetch('/setState/?' + e.target.name + '=' + e.target.value);
+      }
+    </script>
+  </body>
+</html>
+)=====";
+
+#endif;
